@@ -5,21 +5,29 @@ menu
 {% endblock %}
 
 {% block main %}
+    <div class="category-menu">
+        <ul>
+            {% for category in categories %}
+            <li><a href="/menu/{{ category[0] }}">{{ category[1] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
     <div class="products">
+        {%  for coffee in products %}
         <div class="product-box">
-            <h3 class="product-box-heading">Flat White</h3>
-            <p class="product-box-info">Definitely created in New Zealand (not in the West Island) - a classic. </p>
-            <img src="static/images/flatwhite.jpg">
-            <p><strong>Size:</strong> 180ml</p>
-            <p><strong>Price:</strong> $4.00</p>
+            <div class="product-box-heading">
+                <h3>{{ coffee[0] }}</h3>
+            </div>
+            <div class="product-box-image">
+                <img src="/static/images/{{ coffee[3] }}.jpg">
+            </div>
+            <div class="product-box-info">
+                <p>{{ coffee[1] }}</p>
+                <p><strong>Size:</strong> {{ coffee[2] }}</p>
+                <p><strong>Price:</strong> ${{ coffee[4] }}</p>
+            </div>
         </div>
+        {% endfor %}
 
-        <div class="product-box">
-            <h3 class="product-box-heading">Latte</h3>
-            <p class="product-box-info">The New Zealand latte is larger than a flat white and has more foamy milk.</p>
-            <img src="static/images/latte.jpg">
-            <p><strong>Size:</strong> 240ml</p>
-            <p><strong>Price:</strong> $4.00</p>
-        </div>
     </div>
 {% endblock %}

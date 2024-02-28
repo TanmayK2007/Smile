@@ -1468,76 +1468,129 @@
       <Position>1</Position>
     </argument>
     <table id="518" parent="177" name="Products"/>
-    <table id="519" parent="177" name="sqlite_master">
+    <table id="519" parent="177" name="category"/>
+    <table id="520" parent="177" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="520" parent="177" name="sqlite_sequence">
+    <table id="521" parent="177" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <column id="521" parent="518" name="id">
+    <table id="522" parent="177" name="user"/>
+    <column id="523" parent="518" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="522" parent="518" name="name">
+    <column id="524" parent="518" name="name">
       <DasType>varchar(30)|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="523" parent="518" name="description">
+    <column id="525" parent="518" name="description">
       <DasType>varchar(300)|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="524" parent="518" name="volume">
+    <column id="526" parent="518" name="volume">
       <DasType>char(6)|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="525" parent="518" name="image">
+    <column id="527" parent="518" name="image">
       <DasType>varchar(30)|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="526" parent="518" name="price">
+    <column id="528" parent="518" name="price">
       <DasType>float|0s</DasType>
       <Position>6</Position>
     </column>
-    <index id="527" parent="518" name="sqlite_autoindex_Products_1">
+    <column id="529" parent="518" name="cat_id">
+      <DasType>integer|0s</DasType>
+      <Position>7</Position>
+    </column>
+    <index id="530" parent="518" name="sqlite_autoindex_Products_1">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="528" parent="518">
+    <key id="531" parent="518">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Products_1</UnderlyingIndexName>
     </key>
-    <key id="529" parent="518">
+    <key id="532" parent="518">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_Products_1</UnderlyingIndexName>
     </key>
-    <column id="530" parent="519" name="type">
+    <column id="533" parent="519" name="id">
+      <DasType>integer|0s</DasType>
+      <Position>1</Position>
+    </column>
+    <column id="534" parent="519" name="name">
+      <DasType>TEXT|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="535" parent="520" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="531" parent="519" name="name">
+    <column id="536" parent="520" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="532" parent="519" name="tbl_name">
+    <column id="537" parent="520" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="533" parent="519" name="rootpage">
+    <column id="538" parent="520" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="534" parent="519" name="sql">
+    <column id="539" parent="520" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="535" parent="520" name="name">
+    <column id="540" parent="521" name="name">
       <Position>1</Position>
     </column>
-    <column id="536" parent="520" name="seq">
+    <column id="541" parent="521" name="seq">
       <Position>2</Position>
     </column>
+    <column id="542" parent="522" name="id">
+      <AutoIncrement>1</AutoIncrement>
+      <DasType>integer|0s</DasType>
+      <Position>1</Position>
+    </column>
+    <column id="543" parent="522" name="fname">
+      <DasType>varchar|0s</DasType>
+      <DefaultExpression>30</DefaultExpression>
+      <Position>2</Position>
+    </column>
+    <column id="544" parent="522" name="lname">
+      <DasType>varchar|0s</DasType>
+      <DefaultExpression>30</DefaultExpression>
+      <Position>3</Position>
+    </column>
+    <column id="545" parent="522" name="email">
+      <DasType>varchar|0s</DasType>
+      <DefaultExpression>80</DefaultExpression>
+      <Position>4</Position>
+    </column>
+    <column id="546" parent="522" name="password">
+      <DasType>char|0s</DasType>
+      <DefaultExpression>60</DefaultExpression>
+      <Position>5</Position>
+    </column>
+    <index id="547" parent="522" name="sqlite_autoindex_user_1">
+      <ColNames>email</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="548" parent="522">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="549" parent="522">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_user_1</UnderlyingIndexName>
+    </key>
   </database-model>
 </dataSource>
