@@ -134,7 +134,9 @@ a, a:visited {
 .myform {
     width: 80%;
     margin: auto;
-    padding-top: 3rem;
+    padding-bottom: 1rem;
+    margin-bottom: 20px;
+    display: block;
 }
 
 .form-group {
