@@ -34,24 +34,32 @@ def is_logged_in():
 
 
 @app.route('/')
-def render_homepage():
+def render_home():
     return render_template('home.html', logged_in=is_logged_in())
 
 
+def is_ordering():
+    if session.get("order") is None:
+        print("not ordering")
+        return False
+    else:
+        print("ordering")
+        return True
+
+
 @app.route('/menu/<cat_id>')
-def render_menu_page(cat_id):
-    con = create_connection(DATABASE)
-    query = "SELECT name, description, volume, image, price FROM products WHERE cat_id=?"
-    cur = con.cursor()
-    cur.execute(query, (cat_id,))
-    product_list = cur.fetchall()
-    query = "SELECT id, name FROM category"
-    cur = con.cursor()
-    cur.execute(query)
-    category_list = cur.fetchall()
-    con.close()
-    print(product_list)
-    return render_template('menu.html', products=product_list, categories=category_list)
+def render_menu(cat_id):
+    category_list = get_list("SELECT * FROM category", "")
+    product_list = get_list("SELECT * FROM Products WHERE cat_id = ? ORDER BY name", (cat_id, ))
+    order_start = request.args.get('order')
+    if order_start == "start" and not is_ordering():
+        session["order"] = []
+
+    return render_template("menu.html", categories=category_list, products=product_list,
+                           logged_in=is_logged_in(), ordering=is_ordering())
+
+
+
 
 
 @app.route('/contact')
@@ -59,14 +67,10 @@ def render_contact():
     return render_template('contact.html', logged_in=is_logged_in())
 
 
-def open_database(database):
-    return sqlite3.connect(database)
-
-
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
     if is_logged_in():
-        return redirect('/menu/1')
+        return redirect('/')
     print("Logging in")
     if request.method == "POST":
         email = request.form['email'].strip().lower()
@@ -76,17 +80,17 @@ def render_login():
         con = create_connection(DATABASE)
         cur = con.cursor()
         cur.execute(query, (email,))
-        user_data = cur.fetchone()
+        user_data = cur.fetchall()
         con.close()
         print(user_data)
         # if given email is not in the database this will raise an error
         # would be better to find out how to see if the query return an empty result set
-        try:
-            user_id = user_data[0]
-            first_name = user_data[1]
-            db_password = user_data[2]
-        except IndexError:
-            return redirect("/login?error=Invalid+username+or+password")
+        if user_data is None:
+            return redirect("/login?error=Email+invalid+password+incorrect")
+
+        user_id = user_data[0][0]
+        first_name = user_data[0][1]
+        db_password = user_data[0][2]
 
         # check if the password is incorrect for that email address
 
@@ -192,7 +196,16 @@ def render_delete_category():
 
 
 @app.route('/delete_category_confirm/<cat_id>')
-
+def delete_category_confirm(cat_id):
+    if not is_logged_in():
+        return redirect('/?message=Need+to+be+logged+in.')
+    con = create_connection(DATABASE)
+    query = "DELETE FROM category WHERE id = ?"
+    cur = con.cursor()
+    cur.execute(query, (cat_id, ))
+    con.commit()
+    con.close()
+    return redirect("/admin")
 
 
 app.run(host='0.0.0.0', debug=True)

@@ -1520,6 +1520,7 @@
       <UnderlyingIndexName>sqlite_autoindex_Products_1</UnderlyingIndexName>
     </key>
     <column id="533" parent="519" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DasType>integer|0s</DasType>
       <Position>1</Position>
     </column>
@@ -1528,67 +1529,81 @@
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="535" parent="520" name="type">
+    <index id="535" parent="519" name="sqlite_autoindex_category_1">
+      <ColNames>id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="536" parent="519">
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_category_1</UnderlyingIndexName>
+    </key>
+    <key id="537" parent="519">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>sqlite_autoindex_category_1</UnderlyingIndexName>
+    </key>
+    <column id="538" parent="520" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="536" parent="520" name="name">
+    <column id="539" parent="520" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="537" parent="520" name="tbl_name">
+    <column id="540" parent="520" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="538" parent="520" name="rootpage">
+    <column id="541" parent="520" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="539" parent="520" name="sql">
+    <column id="542" parent="520" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="540" parent="521" name="name">
+    <column id="543" parent="521" name="name">
       <Position>1</Position>
     </column>
-    <column id="541" parent="521" name="seq">
+    <column id="544" parent="521" name="seq">
       <Position>2</Position>
     </column>
-    <column id="542" parent="522" name="id">
+    <column id="545" parent="522" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>integer|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="543" parent="522" name="fname">
+    <column id="546" parent="522" name="fname">
       <DasType>varchar|0s</DasType>
       <DefaultExpression>30</DefaultExpression>
       <Position>2</Position>
     </column>
-    <column id="544" parent="522" name="lname">
+    <column id="547" parent="522" name="lname">
       <DasType>varchar|0s</DasType>
       <DefaultExpression>30</DefaultExpression>
       <Position>3</Position>
     </column>
-    <column id="545" parent="522" name="email">
+    <column id="548" parent="522" name="email">
       <DasType>varchar|0s</DasType>
       <DefaultExpression>80</DefaultExpression>
       <Position>4</Position>
     </column>
-    <column id="546" parent="522" name="password">
+    <column id="549" parent="522" name="password">
       <DasType>char|0s</DasType>
       <DefaultExpression>60</DefaultExpression>
       <Position>5</Position>
     </column>
-    <index id="547" parent="522" name="sqlite_autoindex_user_1">
+    <index id="550" parent="522" name="sqlite_autoindex_user_1">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="548" parent="522">
+    <key id="551" parent="522">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="549" parent="522">
+    <key id="552" parent="522">
       <ColNames>email</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_user_1</UnderlyingIndexName>
     </key>
