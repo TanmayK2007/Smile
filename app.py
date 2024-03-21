@@ -35,7 +35,11 @@ def is_logged_in():
 
 @app.route('/')
 def render_home():
-    return render_template('home.html', logged_in=is_logged_in())
+    message = request.args.get('message')
+    if message is None:
+        message = ""
+
+    return render_template('home.html', logged_in=is_logged_in(), message=message, ordering=is_ordering())
 
 
 def is_ordering():
@@ -47,10 +51,48 @@ def is_ordering():
         return True
 
 
+def get_list(query, params):
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    if params == "":
+        cur.execute(query)
+    else:
+        cur.execute(query, params)
+    query_list = cur.fetchall()
+    con.close()
+    return query_list
+
+
+def put_data(query, params):
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    cur.execute(query, params)
+    con.commit()
+    con.close()
+
+
+def summarise_order():
+    order = session['order']
+    print(order)
+    order.sort()
+    print(order)
+    order_summary = []
+    last_order = -1
+    for item in order:
+        if item != last_order:
+            order_summary.append([item, 1])
+            last_order = item
+        else:
+            order_summary[-1][1] += 1
+    print(order_summary)
+    return order_summary
+
+
 @app.route('/menu/<cat_id>')
 def render_menu(cat_id):
     category_list = get_list("SELECT * FROM category", "")
-    product_list = get_list("SELECT * FROM Products WHERE cat_id = ? ORDER BY name", (cat_id, ))
+    product_list = get_list("SELECT * FROM Products"
+                            " WHERE cat_id = ? ORDER BY name", (cat_id, ))
     order_start = request.args.get('order')
     if order_start == "start" and not is_ordering():
         session["order"] = []
@@ -59,7 +101,62 @@ def render_menu(cat_id):
                            logged_in=is_logged_in(), ordering=is_ordering())
 
 
+@app.route('/add_to_cart/<product_id>')
+def add_to_cart(product_id):
+    try:
+        product_id = int(product_id)
+    except ValueError:
+        print("{} is not an integer".format(product_id))
+        return redirect("/menu/1?error=Invalid+product+id")
+    print("Adding to cart product", product_id)
+    order = session['order']
+    print("Order before adding", order)
+    order.append(product_id)
+    print("Order after adding", order)
+    session['order'] = order
+    return redirect(request.referrer)
 
+
+@app.route('/cart', methods=['POST', 'GET'])
+def render_cart():
+    if request.method == "POST":
+        name = request.form['name']
+        print(name)
+        put_data("INSERT INTO orders VALUES (null, ?, TIME('now'), ?)", (name, 1))
+        order_number = get_list("SELECT max(id) FROM orders WHERE name = ?", (name, ))
+        print(order_number)
+        order_number = order_number[0][0]
+        orders = summarise_order()
+        for order in orders:
+            put_data("INSERT INTO order_contents VALUES (null, ?, ?, ?)", (order_number, order[0], order[1]))
+        session.pop('order')
+        return redirect('/?message=Order+has+been+placed+under+the+name' + name)
+    else:
+        orders = summarise_order()
+        total = 0
+        for item in orders:
+            item_detail = get_list("SELECT name, price FROM Products WHERE id = ?", (item[0], ))
+            print(item_detail)
+            if item_detail:
+                item.append(item_detail[0][0])
+                item.append(item_detail[0][1])
+                item.append(item_detail[0][1] * item[1])
+                total += item_detail[0][1] * item[1]
+        print(orders)
+        return render_template("cart.html", logged_in=is_logged_in(),
+                               ordering=is_ordering(), products=orders, total=total)
+
+
+@app.route('/process_orders/<processed>')
+def render_processed_orders(processed):
+    label = "processed"
+    if processed == "1":
+        label = "un" + label
+    processed = int(processed)
+    all_orders = get_list("SELECT orders.id, orders.name, timestamp, product.name, quantity, price FROM orders "
+                          "INNER JOIN order_contents ON orders.id = order_contents.order_id "
+                          "INNER JOIN products ON order_contents.product_id = product_id "
+                          "WHERE processed = ?", (processed, ))
 
 
 @app.route('/contact')

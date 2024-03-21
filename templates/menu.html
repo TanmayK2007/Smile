@@ -5,29 +5,32 @@ menu
 {% endblock %}
 
 {% block main %}
-    <div class="category-menu">
-        <ul>
-            {% for category in categories %}
-            <li><a href="/menu/{{ category[0] }}">{{ category[1] }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
+<div class="category-menu">
+    <ul>
+        {% for category in categories %}
+        <li class="category-item">
+            <a href="/menu/{{ category[0] }}">{{ category[1] }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
     <div class="products">
-        {%  for coffee in products %}
+
+        {%  for product in products %}
         <div class="product-box">
-            <div class="product-box-heading">
-                <h3>{{ coffee[0] }}</h3>
-            </div>
-            <div class="product-box-image">
-                <img src="/static/images/{{ coffee[3] }}.jpg">
-            </div>
-            <div class="product-box-info">
-                <p>{{ coffee[1] }}</p>
-                <p><strong>Size:</strong> {{ coffee[2] }}</p>
-                <p><strong>Price:</strong> ${{ coffee[4] }}</p>
-            </div>
+            <div class="product-box-heading"><h2>{{ product[1] }}
+
+            </h2></div>
+            <div class="product-box-image"><img src="/static/images/{{ product[4] }}.jpg"></div>
+            <div class="product-box-info">{{ product[2] }}</div>
+            <div class="product-box-info"><strong>Size: </strong>{{ product[3] }}</div>
+            <div class="product-box-info"><strong>Price: </strong>{{ product[5] }}</div>
+            {% if ordering %}
+            <div class="product-box-info"><a href="/add_to_cart/{{ product[0] }}"> Add to cart </a></div>
+            {% endif %}
         </div>
         {% endfor %}
 
-    </div>
+</div>
 {% endblock %}
